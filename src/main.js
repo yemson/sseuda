@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
+import 'bootstrap/dist/css/bootstrap.css'
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
