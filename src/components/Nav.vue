@@ -8,7 +8,7 @@
         sseuda
       </router-link>
       <div
-        v-if="user.uid == null"
+        v-if="user == ''"
       >
         <div
           class="d-flex"
@@ -19,6 +19,18 @@
           >
             로그인
           </router-link>
+        </div>
+      </div>
+      <div v-else>
+        <div
+          class="d-flex"
+        >
+          <button
+            class="btn btn-primary"
+            @click="logout"
+          >
+            로그아웃
+          </button>
         </div>
       </div>
     </div>
@@ -46,6 +58,11 @@ export default ({
           this.user = user
         }
       })
+    },
+    logout () {
+      const auth = getAuth()
+      auth.signOut()
+      this.$router.go()
     }
   }
 })

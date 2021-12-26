@@ -1,17 +1,19 @@
 <template>
   <div>
     <Nav />
-    <p>This is an home page.</p>
+    <Jumbo />
   </div>
 </template>
 
 <script>
 import Nav from '../components/Nav.vue'
+import Jumbo from '../components/Jumbo.vue'
 
 export default {
   name: 'Home',
   components: {
-    Nav
+    Nav,
+    Jumbo
   }
 }
 </script>

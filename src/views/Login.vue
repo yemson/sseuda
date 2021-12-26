@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence } from 'firebase/auth'
 
 export default {
   name: 'Login',
@@ -97,19 +97,22 @@ export default {
   methods: {
     login () {
       const auth = getAuth()
-      signInWithEmailAndPassword(auth, this.email, this.password)
+      setPersistence(auth, browserSessionPersistence)
         .then(() => {
+          signInWithEmailAndPassword(auth, this.email, this.password)
           this.$router.push('/')
         })
-        .catch(error => {
-          alert(error.message)
+        .catch((error) => {
+          const errorCode = error.code
+          const errorMessage = error.message
+          console.log(errorCode, errorMessage)
         })
     },
     checkAuth () {
       const auth = getAuth()
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          this.$router.push('/')
+          this.$router.push('/').catch(() => {})
         }
       })
     }
@@ -121,6 +124,6 @@ export default {
   .card {
     border: none;
     border-radius: 0;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
   }
 </style>
