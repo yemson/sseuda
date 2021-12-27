@@ -1,34 +1,45 @@
 <template>
   <div class="container">
-    <div class="row align-items-md-stretch mt-4">
-      <div class="col-md-6">
-        <div class="h-100 p-5 bg-light border rounded-3">
-          <h2>Add borders</h2>
-          <p>Or, keep it light and add a border for some added definition to the boundaries of your content. Be sure to look under the hood at the source HTML here as we've adjusted the alignment and sizing of both column's content for equal-height.</p>
-          <button
-            class="btn btn-outline-secondary"
+    <div class="row align-items-md-stretch mt-2">
+      <div class="col-md-6 mt-2">
+        <div class="h-100 p-5 bg-light border rounded-3 shadow-sm">
+          <h2 class="fw-bold mt-2">
+            오늘의 제시어
+          </h2>
+          <p class="fs-1">
+            자몽, 귤, 오렌지
+          </p>
+          <router-link
+            class="btn btn-outline-secondary mt-2"
             type="button"
+            to="/post"
           >
-            Example button
-          </button>
+            글쓰러 가기
+          </router-link>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="h-100 p-5 bg-light border rounded-3">
-          <h2>Add borders</h2>
-          <p>Or, keep it light and add a border for some added definition to the boundaries of your content. Be sure to look under the hood at the source HTML here as we've adjusted the alignment and sizing of both column's content for equal-height.</p>
+      <div class="col-md-6 mt-2">
+        <div class="h-100 p-5 bg-light border rounded-3 shadow-sm">
+          <img
+            :src="require('../assets/image/profile.png')"
+            alt="jumbo"
+            class="img-fluid"
+            style="width: 85px"
+          >
+          <h3>{{ user.email }}</h3>
           <button
             class="btn btn-outline-secondary"
             type="button"
           >
-            Example button
+            마이페이지
           </button>
         </div>
       </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4 mt-1">
+    <hr class="solid shadow-sm">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4">
       <div class="col">
-        <div class="card h-100">
+        <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="card-title">
               Card title
@@ -40,7 +51,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="card h-100">
+        <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="card-title">
               Card title
@@ -52,7 +63,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="card h-100">
+        <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="card-title">
               Card title
@@ -64,7 +75,7 @@
         </div>
       </div>
       <div class="col">
-        <div class="card h-100">
+        <div class="card shadow-sm h-100">
           <div class="card-body">
             <h5 class="card-title">
               Card title
@@ -106,13 +117,11 @@ export default {
 </script>
 
 <style>
-  .card {
-    border: none;
-    border-radius: 0;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-  }
   .jumbo-title {
       font-size: 2rem;
       font-weight: bold;
+  }
+  hr.solid {
+    border-top: 2px solid #999;
   }
 </style>

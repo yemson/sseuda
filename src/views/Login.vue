@@ -10,9 +10,10 @@
         </router-link>
       </div>
     </nav>
+    <!-- TODO: 반응형 필요 -->
     <div
       class="card"
-      style="width: 30rem; height: 28rem; margin: 0 auto; margin-top: 4em;"
+      style="width: 30em; height: 28em; margin: 0 auto; margin-top: 4em;"
     >
       <div
         class="card-body"
@@ -121,9 +122,5 @@ export default {
 </script>
 
 <style>
-  .card {
-    border: none;
-    border-radius: 0;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-  }
+
 </style>
