@@ -7,7 +7,7 @@
             오늘의 제시어
           </h2>
           <p class="fs-1">
-            자몽, 귤, 오렌지
+            -
           </p>
           <router-link
             class="btn btn-outline-secondary mt-2"
@@ -37,53 +37,33 @@
       </div>
     </div>
     <hr class="solid shadow-sm">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4">
-      <div class="col">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">
-              Card title
-            </h5>
-            <p class="card-text">
-              This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">
-              Card title
-            </h5>
-            <p class="card-text">
-              This is a short card.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">
-              Card title
-            </h5>
-            <p class="card-text">
-              This is a longer card with supporting text below as a natural lead-in to additional content.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">
-              Card title
-            </h5>
-            <p class="card-text">
-              This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-            </p>
-          </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-3 g-4 mb-4">
+      <div
+        v-for="post in posts"
+        :key="post.id"
+      >
+        <div class="col">
+          <router-link
+            :to="`/postdetail/${post.id}`"
+            style="text-decoration: none; color: inherit"
+          >
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 class="card-title">
+                  {{ post.title }}
+                </h5>
+                <p class="card-text">
+                  {{ post.content }}
+                </p>
+                <p class="card-text">
+                  <small class="text-muted">{{ post.createdAt | moment('YYYY-MM-DD') }}</small>
+                </p>
+              </div>
+              <div class="card-footer text-muted">
+                {{ post.userEmail }}
+              </div>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -92,16 +72,19 @@
 
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getFirestore, collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 
 export default {
   name: 'Jumbo',
   data () {
     return {
-      user: ''
+      user: '',
+      posts: []
     }
   },
   mounted () {
     this.checkAuth()
+    this.getPosts()
   },
   methods: {
     checkAuth () {
@@ -110,6 +93,20 @@ export default {
         if (user) {
           this.user = user
         }
+      })
+    },
+    async getPosts () {
+      const db = getFirestore()
+      const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'))
+      onSnapshot(q, (snapshot) => {
+        this.posts = []
+        snapshot.forEach((doc) => {
+          this.posts.push({
+            id: doc.id,
+            ...doc.data()
+          })
+          console.log(doc.id)
+        })
       })
     }
   }
@@ -124,4 +121,15 @@ export default {
   hr.solid {
     border-top: 2px solid #999;
   }
+  .card{
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+    cursor: pointer;
+  }
+  .card:hover{
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
 </style>

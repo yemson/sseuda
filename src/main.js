@@ -2,10 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import { initializeApp } from 'firebase/app'
-import { getDatabase } from 'firebase/database'
+import { getFirestore } from 'firebase/firestore'
 import { getAnalytics } from 'firebase/analytics'
-import { rtdbPlugin } from 'vuefire'
 import 'bootstrap/dist/css/bootstrap.css'
+import vueMoment from 'vue-moment'
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -19,12 +19,12 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
-const database = getDatabase(app) // eslint-disable-line no-unused-vars
+const db = getFirestore() // eslint-disable-line no-unused-vars
 const analytics = getAnalytics(app) // eslint-disable-line no-unused-vars
 
-Vue.use(rtdbPlugin)
-
 Vue.config.productionTip = false
+
+Vue.use(vueMoment)
 
 new Vue({
   router,

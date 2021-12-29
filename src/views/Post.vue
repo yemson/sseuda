@@ -26,14 +26,15 @@
 
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getDatabase, ref, set } from 'firebase/database'
+import { getFirestore, collection, addDoc } from 'firebase/firestore'
 
 export default {
   data () {
     return {
       user: '',
       title: '',
-      content: ''
+      content: '',
+      input: ''
     }
   },
   mounted () {
@@ -49,25 +50,21 @@ export default {
         }
       })
     },
-    createPost () {
-      const auth = getAuth()
-      const db = getDatabase()
-      const postsRef = ref(db, 'posts')
-      const post = {
-        title: this.title,
-        content: this.content,
-        user: auth.currentUser.email,
-        createdAt: Date.now()
+    async createPost () {
+      const db = getFirestore()
+      try {
+        const docRef = await addDoc(collection(db, 'posts'), {
+          title: this.title,
+          content: this.content,
+          createdAt: Date.now(),
+          userUid: getAuth().currentUser.uid,
+          userEmail: getAuth().currentUser.email
+        })
+        console.log('Document written with ID: ', docRef.id)
+        this.$router.push('/').catch(() => {})
+      } catch (e) {
+        console.error('Error adding document: ', e)
       }
-      set(postsRef, post)
-        .then(() => {
-          this.$router.push('/').catch(() => {})
-        })
-        .catch((error) => {
-          const errorCode = error.code
-          const errorMessage = error.message
-          console.log(errorCode, errorMessage)
-        })
     }
   }
 }
