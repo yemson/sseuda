@@ -66,6 +66,13 @@
           >
             회원가입
           </button>
+          <router-link
+            class="btn btn-outline-primary"
+            type="button"
+            to="/login"
+          >
+            로그인
+          </router-link>
         </div>
       </div>
     </div>

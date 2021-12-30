@@ -6,6 +6,8 @@ import { getFirestore } from 'firebase/firestore'
 import { getAnalytics } from 'firebase/analytics'
 import 'bootstrap/dist/css/bootstrap.css'
 import vueMoment from 'vue-moment'
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -25,6 +27,7 @@ const analytics = getAnalytics(app) // eslint-disable-line no-unused-vars
 Vue.config.productionTip = false
 
 Vue.use(vueMoment)
+Vue.use(Toast)
 
 new Vue({
   router,

@@ -3,6 +3,9 @@
     <div class="row align-items-md-stretch mt-2">
       <div class="col-md-6 mt-2">
         <div class="h-100 p-5 bg-light border rounded-3 shadow-sm">
+          <h5 class="fw-bold mt-2">
+            {{ $moment().format('YYYY-MM-DD') }}
+          </h5>
           <h2 class="fw-bold mt-2">
             오늘의 제시어
           </h2>
@@ -12,7 +15,7 @@
           <router-link
             class="btn btn-outline-secondary mt-2"
             type="button"
-            to="/post"
+            to="/marked"
           >
             글쓰러 가기
           </router-link>
@@ -47,18 +50,28 @@
             :to="`/postdetail/${post.id}`"
             style="text-decoration: none; color: inherit"
           >
-            <div class="card shadow-sm h-100">
-              <div class="card-body">
-                <h5 class="card-title">
-                  {{ post.title }}
-                </h5>
-                <p class="card-text">
-                  {{ post.content }}
-                </p>
-                <p class="card-text">
-                  <small class="text-muted">{{ post.createdAt | moment('YYYY-MM-DD') }}</small>
+            <div
+              class="card shadow-sm"
+              style="min-height: 25em; max-height: 25em;"
+            >
+              <div class="card-header">
+                {{ post.title }}
+              </div>
+              <div
+                class="card-body"
+                style="overflow: hidden;"
+              >
+                <p
+                  class="card-text lh-lg"
+                >
+                  {{ validataPostContent(post.content) }}
                 </p>
               </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <small class="text-muted">{{ post.createdAt | moment('YYYY-MM-DD') }}</small>
+                </li>
+              </ul>
               <div class="card-footer text-muted">
                 {{ post.userEmail }}
               </div>
@@ -105,15 +118,17 @@ export default {
             id: doc.id,
             ...doc.data()
           })
-          console.log(doc.id)
         })
       })
+    },
+    validataPostContent (content) {
+      return content.replace(/(<([^>]+)>)/ig, '')
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
   .jumbo-title {
       font-size: 2rem;
       font-weight: bold;

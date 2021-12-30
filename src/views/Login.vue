@@ -12,7 +12,7 @@
     </nav>
     <!-- TODO: 반응형 필요 -->
     <div
-      class="card"
+      class="card shadow-sm"
       style="width: 30em; height: 28em; margin: 0 auto; margin-top: 4em;"
     >
       <div
@@ -101,7 +101,18 @@ export default {
       setPersistence(auth, browserSessionPersistence)
         .then(() => {
           signInWithEmailAndPassword(auth, this.email, this.password)
-          this.$router.push('/')
+            .then(() => {
+              this.$router.push('/').catch(() => {})
+              this.$toast.success('로그인 성공!', {
+                position: 'top-center'
+              })
+            })
+            .catch(() => {
+              this.password = ''
+              this.$toast.error('아이디와 비밀번호를 확인해 주세요!', {
+                position: 'top-center'
+              })
+            })
         })
         .catch((error) => {
           const errorCode = error.code
