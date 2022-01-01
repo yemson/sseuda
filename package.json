@@ -13,6 +13,7 @@
     "core-js": "^3.6.5",
     "firebase": "^9.6.1",
     "marked": "^4.0.8",
+    "turndown": "^7.1.1",
     "vue": "^2.6.11",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.2.0",
