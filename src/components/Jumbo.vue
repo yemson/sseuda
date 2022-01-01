@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row align-items-md-stretch mt-2">
       <div class="col-md-6 mt-2">
-        <div class="h-100 p-5 bg-light border rounded-3 shadow-sm">
+        <div class="h-100 p-5 bg-light border shadow-sm">
           <h5 class="fw-bold mt-2">
             {{ $moment().format('YYYY-MM-DD') }}
           </h5>
@@ -13,16 +13,18 @@
             -
           </p>
           <router-link
-            class="btn btn-outline-secondary mt-2"
+            class="btn btn-outline-secondary mt-2 rounded-0"
             type="button"
-            to="/marked"
+            to="/post"
           >
             글쓰러 가기
           </router-link>
         </div>
       </div>
       <div class="col-md-6 mt-2">
-        <div class="h-100 p-5 bg-light border rounded-3 shadow-sm">
+        <div
+          class="h-100 p-5 bg-light border shadow-sm"
+        >
           <img
             :src="require('../assets/image/profile.png')"
             alt="jumbo"
@@ -31,7 +33,7 @@
           >
           <h3>{{ user.email }}</h3>
           <button
-            class="btn btn-outline-secondary"
+            class="btn btn-outline-secondary rounded-0"
             type="button"
           >
             마이페이지
@@ -51,7 +53,7 @@
             style="text-decoration: none; color: inherit"
           >
             <div
-              class="card shadow-sm"
+              class="card shadow-sm rounded-0"
               style="min-height: 25em; max-height: 25em;"
             >
               <div class="card-header">
@@ -64,12 +66,12 @@
                 <p
                   class="card-text lh-lg"
                 >
-                  {{ validataPostContent(post.content) }}
+                  {{ validatePostContent(post.content) }}
                 </p>
               </div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                  <small class="text-muted">{{ post.createdAt | moment('YYYY-MM-DD') }}</small>
+                  <small class="text-muted">{{ post.createdAt | moment("YYYY년 MMMM Do, dddd") }}</small>
                 </li>
               </ul>
               <div class="card-footer text-muted">
@@ -121,7 +123,7 @@ export default {
         })
       })
     },
-    validataPostContent (content) {
+    validatePostContent (content) {
       return content.replace(/(<([^>]+)>)/ig, '')
     }
   }

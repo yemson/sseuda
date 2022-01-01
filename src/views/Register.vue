@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="random-bg">
     <nav class="navbar navbar-light bg-light">
       <div class="container">
         <router-link
@@ -11,7 +11,7 @@
       </div>
     </nav>
     <div
-      class="card"
+      class="card rounded-0"
       style="width: 30rem; height: 28rem; margin: 0 auto; margin-top: 4em;"
     >
       <div
@@ -36,7 +36,7 @@
             id="emailInput"
             v-model="email"
             type="email"
-            class="form-control"
+            class="form-control rounded-0"
             placeholder="이메일 입력"
           >
         </div>
@@ -52,7 +52,7 @@
             id="passwordInput"
             v-model="password"
             type="password"
-            class="form-control"
+            class="form-control rounded-0"
             placeholder="비밀번호 입력"
           >
         </div>
@@ -61,13 +61,13 @@
           style="margin-top: 2.5rem;"
         >
           <button
-            class="btn btn-primary"
+            class="btn btn-primary mb-2 rounded-0"
             type="button"
           >
             회원가입
           </button>
           <router-link
-            class="btn btn-outline-primary"
+            class="btn btn-outline-primary rounded-0"
             type="button"
             to="/login"
           >
@@ -78,3 +78,13 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  .random-bg {
+    background-image: url('https://picsum.photos/1920/1080?grayscale&blur=10');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+  }
+</style>

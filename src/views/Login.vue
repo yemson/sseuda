@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="random-bg">
     <nav class="navbar navbar-light bg-light">
       <div class="container">
         <router-link
@@ -12,7 +12,7 @@
     </nav>
     <!-- TODO: 반응형 필요 -->
     <div
-      class="card shadow-sm"
+      class="card shadow-sm rounded-0"
       style="width: 30em; height: 28em; margin: 0 auto; margin-top: 4em;"
     >
       <div
@@ -37,7 +37,7 @@
             id="emailInput"
             v-model="email"
             type="email"
-            class="form-control"
+            class="form-control rounded-0"
             placeholder="이메일 입력"
           >
         </div>
@@ -53,7 +53,7 @@
             id="passwordInput"
             v-model="password"
             type="password"
-            class="form-control"
+            class="form-control rounded-0"
             placeholder="비밀번호 입력"
           >
         </div>
@@ -62,14 +62,14 @@
           style="margin-top: 2.5rem;"
         >
           <button
-            class="btn btn-primary mb-2"
+            class="btn btn-primary mb-2 rounded-0"
             type="button"
             @click="login"
           >
             로그인
           </button>
           <router-link
-            class="btn btn-outline-primary"
+            class="btn btn-outline-primary rounded-0"
             type="button"
             to="/register"
           >
@@ -132,6 +132,12 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  .random-bg {
+    background-image: url('https://picsum.photos/1920/1080?grayscale&blur=10');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+  }
 </style>

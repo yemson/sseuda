@@ -14,7 +14,7 @@
           class="d-flex"
         >
           <router-link
-            class="btn btn-primary"
+            class="btn btn-primary rounded-0"
             to="/login"
           >
             로그인
@@ -26,7 +26,7 @@
           class="d-flex"
         >
           <button
-            class="btn btn-primary"
+            class="btn btn-primary rounded-0"
             @click="logout"
           >
             로그아웃
