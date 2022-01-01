@@ -15,7 +15,7 @@
           <router-link
             class="btn btn-outline-secondary mt-2"
             type="button"
-            to="/marked"
+            to="/post"
           >
             글쓰러 가기
           </router-link>

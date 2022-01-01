@@ -8,6 +8,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 import vueMoment from 'vue-moment'
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
+import VueMarkdownEditor from '@kangc/v-md-editor'
+import '@kangc/v-md-editor/lib/style/base-editor.css'
+import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js'
+import '@kangc/v-md-editor/lib/theme/style/vuepress.css'
+import Prism from 'prismjs'
+import koKR from '@kangc/v-md-editor/lib/lang/ko-KR'
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -26,8 +32,14 @@ const analytics = getAnalytics(app) // eslint-disable-line no-unused-vars
 
 Vue.config.productionTip = false
 
+VueMarkdownEditor.use(vuepressTheme, {
+  Prism
+})
+VueMarkdownEditor.lang.use('ko-KR', koKR)
+
 Vue.use(vueMoment)
 Vue.use(Toast)
+Vue.use(VueMarkdownEditor)
 
 new Vue({
   router,

@@ -1,40 +1,49 @@
 <template>
-  <div class="container">
-    <div class="input-group my-3">
-      <input
-        v-model="title"
-        type="text"
-        class="form-control"
-        placeholder="제목을 입력하세요."
-      >
-    </div>
-    <div class="input-group">
-      <textarea
-        v-model="content"
-        class="form-control"
-      />
-    </div>
-    <button
-      class="btn btn-primary btn-lg btn-block mt-2"
-      type="button"
-      @click="createPost"
+  <div>
+    <Nav />
+    <input
+      v-model="title"
+      type="text"
+      class="form-control"
+      placeholder="제목을 입력하세요."
     >
-      글 작성
-    </button>
+    <v-md-editor
+      v-model="text"
+      height="750px"
+    />
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end m-3">
+      <router-link
+        class="btn btn-outline-secondary me-md-2"
+        type="button"
+        to="/"
+      >
+        취소
+      </router-link>
+      <button
+        class="btn btn-primary"
+        type="button"
+        @click="createPost"
+      >
+        글 작성
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { getFirestore, collection, addDoc } from 'firebase/firestore'
+import { marked } from 'marked'
+import Nav from '../components/Nav.vue'
 
 export default {
+  components: {
+    Nav
+  },
   data () {
     return {
-      user: '',
       title: '',
-      content: '',
-      input: ''
+      text: ''
     }
   },
   mounted () {
@@ -52,18 +61,28 @@ export default {
     },
     async createPost () {
       const db = getFirestore()
-      try {
-        const docRef = await addDoc(collection(db, 'posts'), {
-          title: this.title,
-          content: this.content,
-          createdAt: Date.now(),
-          userUid: getAuth().currentUser.uid,
-          userEmail: getAuth().currentUser.email
+      const html = marked.parse(this.text)
+      if (html === '') {
+        this.$toast.error('내용을 입력해주세요!', {
+          position: 'top-center'
         })
-        console.log('Document written with ID: ', docRef.id)
-        this.$router.push('/').catch(() => {})
-      } catch (e) {
-        console.error('Error adding document: ', e)
+      } else {
+        try {
+          const docRef = await addDoc(collection(db, 'posts'), {
+            title: this.title,
+            content: html,
+            createdAt: Date.now(),
+            userUid: getAuth().currentUser.uid,
+            userEmail: getAuth().currentUser.email
+          })
+          console.log('Document written with ID: ', docRef.id)
+          this.$router.push('/').catch(() => {})
+          this.$toast.success('글 작성 완료!', {
+            position: 'top-center'
+          })
+        } catch (e) {
+          console.error('Error adding document: ', e)
+        }
       }
     }
   }
