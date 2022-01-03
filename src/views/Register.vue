@@ -36,7 +36,7 @@
             id="emailInput"
             v-model="email"
             type="email"
-            class="form-control rounded-0"
+            class="form-control rounded-0 shadow-sm"
             placeholder="이메일 입력"
           >
         </div>
@@ -52,7 +52,7 @@
             id="passwordInput"
             v-model="password"
             type="password"
-            class="form-control rounded-0"
+            class="form-control rounded-0 shadow-sm"
             placeholder="비밀번호 입력"
           >
         </div>
@@ -61,13 +61,13 @@
           style="margin-top: 2.5rem;"
         >
           <button
-            class="btn btn-primary mb-2 rounded-0"
+            class="btn btn-primary mb-2 rounded-0 shadow-sm"
             type="button"
           >
             회원가입
           </button>
           <router-link
-            class="btn btn-outline-primary rounded-0"
+            class="btn btn-outline-primary rounded-0 shadow-sm"
             type="button"
             to="/login"
           >
@@ -80,11 +80,5 @@
 </template>
 
 <style scoped>
-  .random-bg {
-    background-image: url('https://picsum.photos/1920/1080?grayscale&blur=10');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-  }
+
 </style>

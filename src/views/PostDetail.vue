@@ -22,12 +22,61 @@
       <v-md-preview
         :text="postContent"
       />
+      <hr>
+      <h1>댓글</h1>
+      <div
+        v-for="comment in comments"
+        :key="comment.id"
+      >
+        <div class="card mt-3 rounded-0 shadow-sm">
+          <h5 class="card-header text-muted">
+            {{ comment.userEmail }}
+          </h5>
+          <div class="card-body">
+            <p class="card-text">
+              {{ comment.content }}
+            </p>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">
+              {{ comment.createdAt | moment("YYYY년 MMMM Do, dddd") }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="input-group mt-4 shadow-sm">
+        <span class="input-group-text rounded-0">댓글 입력</span>
+        <textarea
+          v-model="inputComment"
+          class="form-control rounded-0"
+          aria-label="댓글 입력"
+        />
+      </div>
+      <div v-if="canComment">
+        <button
+          class="btn btn-primary my-2 rounded-0 shadow-sm"
+          style="float: right;"
+          @click="createComment"
+        >
+          댓글 작성
+        </button>
+      </div>
+      <div v-else>
+        <button
+          class="btn btn-primary my-2 rounded-0 shadow-sm"
+          style="float: right;"
+          disabled
+        >
+          댓글 작성
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { doc, getDoc, getFirestore } from 'firebase/firestore'
+import { doc, getDoc, collection, addDoc, getFirestore, query, onSnapshot, orderBy } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Turndown from 'turndown'
 import Nav from '../components/Nav.vue'
 
@@ -38,11 +87,16 @@ export default {
   data () {
     return {
       post: {},
-      postContent: ''
+      postContent: '',
+      inputComment: '',
+      canComment: false,
+      comments: []
     }
   },
   mounted () {
     this.postDetail()
+    this.checkAuth()
+    this.getComments()
   },
   methods: {
     async postDetail () {
@@ -53,6 +107,54 @@ export default {
       // console.log(html)
       this.post = post.data()
       this.postContent = html
+    },
+    checkAuth () {
+      const auth = getAuth()
+      onAuthStateChanged(auth, (user) => {
+        if (user == null) {
+          this.canComment = false
+          console.log('로그인 필요')
+        } else {
+          this.canComment = true
+        }
+      })
+    },
+    async createComment () {
+      const db = getFirestore()
+      if (this.inputComment === '') {
+        this.$toast.error('내용을 입력해주세요!', {
+          position: 'top-center'
+        })
+      } else {
+        try {
+          const docRef = await addDoc(collection(db, `posts/${this.$route.params.id}/comments`), {
+            content: this.inputComment,
+            createdAt: Date.now(),
+            userUid: getAuth().currentUser.uid,
+            userEmail: getAuth().currentUser.email
+          })
+          console.log('Document written with ID: ', docRef.id)
+          this.$toast.success('댓글 작성 완료!', {
+            position: 'top-center'
+          })
+          this.inputComment = ''
+        } catch (e) {
+          console.error('Error adding document: ', e)
+        }
+      }
+    },
+    async getComments () {
+      const db = getFirestore()
+      const q = query(collection(db, `posts/${this.$route.params.id}/comments`), orderBy('createdAt', 'desc'))
+      onSnapshot(q, (snapshot) => {
+        this.comments = []
+        snapshot.forEach((doc) => {
+          this.comments.push({
+            id: doc.id,
+            ...doc.data()
+          })
+        })
+      })
     }
   }
 }
