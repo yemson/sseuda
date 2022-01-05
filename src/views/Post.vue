@@ -71,6 +71,7 @@ export default {
           const docRef = await addDoc(collection(db, 'posts'), {
             title: this.title,
             content: html,
+            likes: [],
             createdAt: Date.now(),
             userUid: getAuth().currentUser.uid,
             userEmail: getAuth().currentUser.email

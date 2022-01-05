@@ -8,20 +8,49 @@
       >
         {{ post.title }}
       </h1>
-      <div
-        class="mt-4"
-        style="float: right; display: inline-block"
-      >
-        <p class="text-muted">
-          작성자: {{ post.userEmail }}
-        </p>
-        <p class="text-muted">
-          작성일: {{ post.createdAt | moment("YYYY년 MMMM Do, dddd") }}
-        </p>
-      </div>
       <v-md-preview
         :text="postContent"
       />
+      <hr>
+      <div class="container">
+        <small
+          class="text-muted"
+          style="float: right; margin-left: 0.3em;"
+        >{{ likeCount }}</small>
+        <div v-if="canLike">
+          <div v-if="!clicked">
+            <i
+              class="bi bi-heart text-muted"
+              style="float: right; font-size: 1.5em;"
+              @click="likePost"
+            />
+          </div>
+          <div v-else>
+            <i
+              class="bi bi-heart-fill text-muted"
+              style="float: right; font-size: 1.5em;"
+              @click="likePost"
+            />
+          </div>
+        </div>
+        <div v-else>
+          <i
+            class="bi bi-heart text-muted"
+            style="float: right; font-size: 1.5em;"
+            @click="$toast.error('로그인 후 이용 가능합니다!', {
+              position: 'top-center'
+            })"
+          />
+        </div>
+        <div>
+          <p class="text-muted">
+            작성자: {{ post.userEmail }}
+          </p>
+          <p class="text-muted">
+            작성일: {{ post.createdAt | moment("YYYY년 MMMM Do, dddd") }}
+          </p>
+        </div>
+      </div>
       <hr>
       <h1>댓글</h1>
       <div
@@ -54,7 +83,7 @@
       </div>
       <div v-if="canComment">
         <button
-          class="btn btn-primary my-2 rounded-0 shadow-sm"
+          class="btn btn-primary my-2 mb-5 rounded-0 shadow-sm"
           style="float: right;"
           @click="createComment"
         >
@@ -63,9 +92,11 @@
       </div>
       <div v-else>
         <button
-          class="btn btn-primary my-2 rounded-0 shadow-sm"
-          style="float: right;"
-          disabled
+          class="btn btn-primary my-2 mb-5 rounded-0 shadow-sm"
+          style="float: right"
+          @click="$toast.error('로그인 후 이용 가능합니다!', {
+            position: 'top-center'
+          })"
         >
           댓글 작성
         </button>
@@ -75,12 +106,13 @@
 </template>
 
 <script>
-import { doc, getDoc, collection, addDoc, getFirestore, query, onSnapshot, orderBy } from 'firebase/firestore'
+import { doc, getDoc, collection, addDoc, getFirestore, query, onSnapshot, orderBy, updateDoc } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Turndown from 'turndown'
 import Nav from '../components/Nav.vue'
 
 export default {
+  name: 'PostDetail',
   components: {
     Nav
   },
@@ -90,13 +122,19 @@ export default {
       postContent: '',
       inputComment: '',
       canComment: false,
-      comments: []
+      canLike: false,
+      comments: [],
+      clicked: false,
+      likeCount: 0
     }
   },
   mounted () {
     this.postDetail()
     this.checkAuth()
     this.getComments()
+  },
+  updated () {
+    this.checkLike()
   },
   methods: {
     async postDetail () {
@@ -113,9 +151,11 @@ export default {
       onAuthStateChanged(auth, (user) => {
         if (user == null) {
           this.canComment = false
+          this.canLike = false
           console.log('로그인 필요')
         } else {
           this.canComment = true
+          this.canLike = true
         }
       })
     },
@@ -154,6 +194,40 @@ export default {
             ...doc.data()
           })
         })
+      })
+    },
+    async likePost () {
+      const db = getFirestore()
+      const post = await getDoc(doc(db, `posts/${this.$route.params.id}`))
+      const likes = post.data().likes
+      this.clicked = !this.clicked
+      if (this.clicked) {
+        likes.push(getAuth().currentUser.uid)
+        this.likeCount = likes.length
+      } else {
+        likes.splice(likes.indexOf(getAuth().currentUser.uid), 1)
+        this.likeCount = likes.length
+      }
+      await updateDoc(doc(db, `posts/${this.$route.params.id}`), {
+        likes
+      })
+    },
+    async checkLike () {
+      const db = getFirestore()
+      const auth = getAuth()
+      const post = await getDoc(doc(db, `posts/${this.$route.params.id}`))
+      const likes = post.data().likes
+      this.likeCount = likes.length
+      onAuthStateChanged(auth, (user) => {
+        if (user == null) {
+          this.clicked = false
+        } else {
+          if (likes.includes(user.uid)) {
+            this.clicked = true
+          } else {
+            this.clicked = false
+          }
+        }
       })
     }
   }
