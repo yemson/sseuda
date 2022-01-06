@@ -1,6 +1,10 @@
 <template>
   <div>
-    <Nav :my-page="false" />
+    <Nav :profile="false" />
+    {{ user.displayName }} |
+    {{ user.email }} |
+    {{ user.photoURL }} |
+    {{ user.uid }}
   </div>
 </template>
 
@@ -9,7 +13,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Nav from '../components/Nav.vue'
 
 export default {
-  name: 'MyPage',
+  name: 'Profile',
   components: {
     Nav
   },

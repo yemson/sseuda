@@ -46,13 +46,23 @@
               class="dropdown-menu dropdown-menu-end"
               aria-labelledby="dropdownMenuButton1"
             >
-              <div v-if="myPage">
+              <div v-if="profile">
                 <li>
                   <router-link
                     class="dropdown-item"
-                    :to="`/mypage/${user.uid}`"
+                    :to="`/profile/${user.uid}`"
                   >
-                    마이페이지
+                    프로필
+                  </router-link>
+                </li>
+              </div>
+              <div v-if="setting">
+                <li>
+                  <router-link
+                    class="dropdown-item"
+                    :to="`/setting/${user.uid}`"
+                  >
+                    설정
                   </router-link>
                 </li>
               </div>
@@ -76,7 +86,11 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 export default ({
   name: 'Nav',
   props: {
-    myPage: {
+    profile: {
+      type: Boolean,
+      default: true
+    },
+    setting: {
       type: Boolean,
       default: true
     }
