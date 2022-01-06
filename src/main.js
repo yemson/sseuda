@@ -6,19 +6,19 @@ import { getFirestore } from 'firebase/firestore'
 import { getAnalytics } from 'firebase/analytics'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'bootstrap/dist/js/bootstrap.js'
 import vueMoment from 'vue-moment'
 import moment from 'moment'
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 import VueMarkdownEditor from '@kangc/v-md-editor'
 import '@kangc/v-md-editor/lib/style/base-editor.css'
-import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js'
-import '@kangc/v-md-editor/lib/theme/style/vuepress.css'
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js'
+import '@kangc/v-md-editor/lib/theme/style/github.css'
 import Prism from 'prismjs'
 import koKR from '@kangc/v-md-editor/lib/lang/ko-KR'
 import VMdPreview from '@kangc/v-md-editor/lib/preview'
 import '@kangc/v-md-editor/lib/style/preview.css'
-import hljs from 'highlight.js'
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -37,12 +37,12 @@ const analytics = getAnalytics(app) // eslint-disable-line no-unused-vars
 
 Vue.config.productionTip = false
 
-VueMarkdownEditor.use(vuepressTheme, {
+VueMarkdownEditor.use(githubTheme, {
   Prism
 })
 VueMarkdownEditor.lang.use('ko-KR', koKR)
-VMdPreview.use(vuepressTheme, {
-  Hljs: hljs
+VMdPreview.use(githubTheme, {
+  Prism
 })
 
 moment.locale('ko')

@@ -12,7 +12,7 @@
     </nav>
     <!-- TODO: 반응형 필요 -->
     <div
-      class="card shadow-sm rounded-0"
+      class="card shadow-sm"
       style="width: 30em; height: 28em; margin: 0 auto; margin-top: 4em;"
     >
       <div
@@ -37,7 +37,7 @@
             id="emailInput"
             v-model="email"
             type="email"
-            class="form-control rounded-0 shadow-sm"
+            class="form-control shadow-sm"
             placeholder="이메일 입력"
           >
         </div>
@@ -53,7 +53,7 @@
             id="passwordInput"
             v-model="password"
             type="password"
-            class="form-control rounded-0 shadow-sm"
+            class="form-control shadow-sm"
             placeholder="비밀번호 입력"
           >
         </div>
@@ -62,14 +62,14 @@
           style="margin-top: 2.5rem;"
         >
           <button
-            class="btn btn-primary mb-2 rounded-0 shadow-sm"
+            class="btn btn-primary mb-2 shadow-sm"
             type="button"
             @click="login"
           >
             로그인
           </button>
           <router-link
-            class="btn btn-outline-primary rounded-0 shadow-sm"
+            class="btn btn-outline-primary shadow-sm"
             type="button"
             to="/register"
           >
@@ -104,13 +104,15 @@ export default {
             .then(() => {
               this.$router.push('/').catch(() => {})
               this.$toast.success('로그인 성공!', {
-                position: 'top-center'
+                position: 'top-center',
+                timeout: 2000
               })
             })
             .catch(() => {
               this.password = ''
               this.$toast.error('아이디와 비밀번호를 확인해 주세요!', {
-                position: 'top-center'
+                position: 'top-center',
+                timeout: 2000
               })
             })
         })

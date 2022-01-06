@@ -3,7 +3,7 @@
     <Nav />
     <div class="container">
       <h1
-        class="mt-4"
+        class="mt-4 fw-bold"
         style="display: inline-flex"
       >
         {{ post.title }}
@@ -11,7 +11,7 @@
       <v-md-preview
         :text="postContent"
       />
-      <hr>
+      <hr class="solid">
       <div class="container">
         <small
           class="text-muted"
@@ -38,26 +38,28 @@
             class="bi bi-heart text-muted"
             style="float: right; font-size: 1.5em;"
             @click="$toast.error('로그인 후 이용 가능합니다!', {
-              position: 'top-center'
+              position: 'top-center',
+              timeout: 2000
             })"
           />
         </div>
         <div>
-          <p class="text-muted">
+          <p class="text-muted fw-bold">
             작성자: {{ post.userEmail }}
           </p>
-          <p class="text-muted">
+          <p class="text-muted fw-bold">
             작성일: {{ post.createdAt | moment("YYYY년 MMMM Do, dddd") }}
           </p>
         </div>
       </div>
-      <hr>
+      <hr class="solid">
       <h1>댓글</h1>
       <div
         v-for="comment in comments"
         :key="comment.id"
+        class="container"
       >
-        <div class="card mt-3 rounded-0 shadow-sm">
+        <div class="card mt-3 shadow-sm">
           <h5 class="card-header text-muted">
             {{ comment.userEmail }}
           </h5>
@@ -67,39 +69,42 @@
             </p>
           </div>
           <div class="card-footer">
-            <small class="text-muted">
+            <small class="text-muted fw-bold">
               {{ comment.createdAt | moment("YYYY년 MMMM Do, dddd") }}
             </small>
           </div>
         </div>
       </div>
-      <div class="input-group mt-4 shadow-sm">
-        <span class="input-group-text rounded-0">댓글 입력</span>
-        <textarea
-          v-model="inputComment"
-          class="form-control rounded-0"
-          aria-label="댓글 입력"
-        />
-      </div>
-      <div v-if="canComment">
-        <button
-          class="btn btn-primary my-2 mb-5 rounded-0 shadow-sm"
-          style="float: right;"
-          @click="createComment"
-        >
-          댓글 작성
-        </button>
-      </div>
-      <div v-else>
-        <button
-          class="btn btn-primary my-2 mb-5 rounded-0 shadow-sm"
-          style="float: right"
-          @click="$toast.error('로그인 후 이용 가능합니다!', {
-            position: 'top-center'
-          })"
-        >
-          댓글 작성
-        </button>
+      <div class="container">
+        <div class="input-group mt-4 shadow-sm">
+          <span class="input-group-text">댓글 입력</span>
+          <textarea
+            v-model="inputComment"
+            class="form-control"
+            aria-label="댓글 입력"
+          />
+        </div>
+        <div v-if="canComment">
+          <button
+            class="btn btn-primary my-2 mb-5 shadow-sm"
+            style="float: right;"
+            @click="createComment"
+          >
+            댓글 작성
+          </button>
+        </div>
+        <div v-else>
+          <button
+            class="btn btn-primary my-2 mb-5 shadow-sm"
+            style="float: right"
+            @click="$toast.error('로그인 후 이용 가능합니다!', {
+              position: 'top-center',
+              timeout: 2000
+            })"
+          >
+            댓글 작성
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -152,7 +157,6 @@ export default {
         if (user == null) {
           this.canComment = false
           this.canLike = false
-          console.log('로그인 필요')
         } else {
           this.canComment = true
           this.canLike = true
@@ -163,7 +167,8 @@ export default {
       const db = getFirestore()
       if (this.inputComment === '') {
         this.$toast.error('내용을 입력해주세요!', {
-          position: 'top-center'
+          position: 'top-center',
+          timeout: 2000
         })
       } else {
         try {
@@ -175,7 +180,8 @@ export default {
           })
           console.log('Document written with ID: ', docRef.id)
           this.$toast.success('댓글 작성 완료!', {
-            position: 'top-center'
+            position: 'top-center',
+            timeout: 2000
           })
           this.inputComment = ''
         } catch (e) {
@@ -235,5 +241,7 @@ export default {
 </script>
 
 <style>
-
+  hr.solid {
+    border-top: 2px solid #999;
+  }
 </style>

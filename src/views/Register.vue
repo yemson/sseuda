@@ -11,7 +11,7 @@
       </div>
     </nav>
     <div
-      class="card rounded-0"
+      class="card"
       style="width: 30rem; height: 28rem; margin: 0 auto; margin-top: 4em;"
     >
       <div
@@ -36,7 +36,7 @@
             id="emailInput"
             v-model="email"
             type="email"
-            class="form-control rounded-0 shadow-sm"
+            class="form-control shadow-sm"
             placeholder="이메일 입력"
           >
         </div>
@@ -52,7 +52,7 @@
             id="passwordInput"
             v-model="password"
             type="password"
-            class="form-control rounded-0 shadow-sm"
+            class="form-control shadow-sm"
             placeholder="비밀번호 입력"
           >
         </div>
@@ -61,13 +61,13 @@
           style="margin-top: 2.5rem;"
         >
           <button
-            class="btn btn-primary mb-2 rounded-0 shadow-sm"
+            class="btn btn-primary mb-2 shadow-sm"
             type="button"
           >
             회원가입
           </button>
           <router-link
-            class="btn btn-outline-primary rounded-0 shadow-sm"
+            class="btn btn-outline-primary shadow-sm"
             type="button"
             to="/login"
           >

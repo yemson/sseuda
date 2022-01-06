@@ -2,10 +2,14 @@
   <nav class="navbar navbar-light bg-light">
     <div class="container">
       <router-link
-        class="navbar-brand"
+        class="navbar-brand fw-bold fs-4"
         to="/"
       >
-        sseuda
+        <img
+          :src="require('../assets/image/logo.png')"
+          alt="logo"
+          style="width: 80px;"
+        >
       </router-link>
       <div
         v-if="user == ''"
@@ -14,7 +18,7 @@
           class="d-flex"
         >
           <router-link
-            class="btn btn-primary rounded-0 shadow-sm"
+            class="btn btn-primary shadow-sm fw-bold"
             to="/login"
           >
             로그인
@@ -25,12 +29,41 @@
         <div
           class="d-flex"
         >
-          <button
-            class="btn btn-primary rounded-0 shadow-sm"
-            @click="logout"
-          >
-            로그아웃
-          </button>
+          <div class="mt-2 mx-2">
+            반갑습니다, {{ user.email }}님!
+          </div>
+          <div class="dropdown">
+            <button
+              id="dropdownMenuButton1"
+              class="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              더보기
+            </button>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="dropdownMenuButton1"
+            >
+              <div v-if="myPage">
+                <li>
+                  <router-link
+                    class="dropdown-item"
+                    :to="`/mypage/${user.uid}`"
+                  >
+                    마이페이지
+                  </router-link>
+                </li>
+              </div>
+              <li>
+                <a
+                  class="dropdown-item"
+                  @click="logout"
+                >로그아웃</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -42,6 +75,12 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 export default ({
   name: 'Nav',
+  props: {
+    myPage: {
+      type: Boolean,
+      default: true
+    }
+  },
   data () {
     return {
       user: ''

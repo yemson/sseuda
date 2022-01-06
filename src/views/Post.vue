@@ -4,14 +4,22 @@
     <input
       v-model="title"
       type="text"
-      class="form-control"
+      class="form-control rounded-0"
       placeholder="제목을 입력하세요."
     >
     <v-md-editor
       v-model="text"
       height="750px"
+      left-toolbar="undo redo clear | h bold italic strikethrough quote | ul ol table hr | link image code"
     />
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end m-3">
+    <div
+      class="
+      d-grid
+      gap-2
+      d-md-flex
+      justify-content-md-end
+      m-3"
+    >
       <router-link
         class="btn btn-outline-secondary me-md-2"
         type="button"
@@ -55,7 +63,6 @@ export default {
       onAuthStateChanged(auth, (user) => {
         if (user == null) {
           this.$router.push('/login').catch(() => {})
-          console.log('로그인 필요')
         }
       })
     },
@@ -64,7 +71,8 @@ export default {
       const html = marked.parse(this.text)
       if (html === '') {
         this.$toast.error('내용을 입력해주세요!', {
-          position: 'top-center'
+          position: 'top-center',
+          timeout: 2000
         })
       } else {
         try {
@@ -79,7 +87,8 @@ export default {
           console.log('Document written with ID: ', docRef.id)
           this.$router.push('/').catch(() => {})
           this.$toast.success('글 작성 완료!', {
-            position: 'top-center'
+            position: 'top-center',
+            timeout: 2000
           })
         } catch (e) {
           console.error('Error adding document: ', e)
