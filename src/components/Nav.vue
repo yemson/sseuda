@@ -1,10 +1,18 @@
 <template>
-  <nav class="navbar navbar-light bg-light">
+  <nav
+    class="navbar navbar-light"
+    style="background-color: #ffffff"
+  >
     <div class="container">
       <router-link
         class="navbar-brand fw-bold fs-4"
         to="/"
       >
+        <img
+          :src="require('../assets/image/logo.svg')"
+          alt="logo"
+          width="30px"
+        >
         sseuda
       </router-link>
       <div v-if="!hide">
@@ -26,13 +34,13 @@
           <div
             class="d-flex"
           >
-            <div class="mt-2 mx-2">
+            <div class="mt-2 mx-2 fw-bold">
               반갑습니다, {{ user.displayName }}님!
             </div>
             <div class="dropdown">
               <button
                 id="dropdownMenuButton1"
-                class="btn btn-outline-secondary dropdown-toggle"
+                class="btn btn-outline-secondary dropdown-toggle fw-bold"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -46,7 +54,7 @@
                 <div v-if="profile">
                   <li>
                     <router-link
-                      class="dropdown-item"
+                      class="dropdown-item fw-bold"
                       :to="`/profile/${user.uid}`"
                     >
                       프로필
@@ -56,7 +64,7 @@
                 <div v-if="setting">
                   <li>
                     <router-link
-                      class="dropdown-item"
+                      class="dropdown-item fw-bold"
                       :to="`/setting/${user.uid}`"
                     >
                       설정
@@ -65,7 +73,7 @@
                 </div>
                 <li>
                   <a
-                    class="dropdown-item"
+                    class="dropdown-item fw-bold"
                     @click="logout"
                   >로그아웃</a>
                 </li>
@@ -80,6 +88,8 @@
 
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
+
+const auth = getAuth()
 
 export default ({
   name: 'Nav',
@@ -107,7 +117,6 @@ export default ({
   },
   methods: {
     checkAuth () {
-      const auth = getAuth()
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user
@@ -115,7 +124,6 @@ export default ({
       })
     },
     logout () {
-      const auth = getAuth()
       auth.signOut()
       this.$router.go()
     }

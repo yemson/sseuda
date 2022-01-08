@@ -81,7 +81,7 @@
         >
           <button
             id="pills-today-tab"
-            class="nav-link active"
+            class="nav-link active fw-bold"
             data-bs-toggle="pill"
             data-bs-target="#pills-today"
             type="button"
@@ -98,7 +98,7 @@
         >
           <button
             id="pills-total-tab"
-            class="nav-link"
+            class="nav-link fw-bold"
             data-bs-toggle="pill"
             data-bs-target="#pills-total"
             type="button"
@@ -115,7 +115,7 @@
         >
           <button
             id="pills-hot-tab"
-            class="nav-link"
+            class="nav-link fw-bold"
             data-bs-toggle="pill"
             data-bs-target="#pills-hot"
             type="button"
@@ -169,7 +169,6 @@
                       <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                           <small class="text-muted fw-bold">{{ post.createdAt | moment("YYYY년 MMMM Do, dddd") }}</small>
-                          {{ $moment(post.createdAt).format("YYYY-MMMM-DD") }}
                         </li>
                       </ul>
                       <div class="card-footer text-muted fw-bold">
@@ -249,6 +248,9 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { getFirestore, collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import Nav from '../components/Nav.vue'
 
+const auth = getAuth()
+const db = getFirestore()
+
 export default {
   name: 'Home',
   components: {
@@ -266,7 +268,6 @@ export default {
   },
   methods: {
     checkAuth () {
-      const auth = getAuth()
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user
@@ -274,7 +275,6 @@ export default {
       })
     },
     async getPosts () {
-      const db = getFirestore()
       const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'))
       onSnapshot(q, (snapshot) => {
         this.posts = []

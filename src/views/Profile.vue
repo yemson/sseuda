@@ -12,6 +12,8 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Nav from '../components/Nav.vue'
 
+const auth = getAuth()
+
 export default {
   name: 'Profile',
   components: {
@@ -27,7 +29,6 @@ export default {
   },
   methods: {
     checkAuth () {
-      const auth = getAuth()
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user

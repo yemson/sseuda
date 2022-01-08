@@ -44,6 +44,9 @@ import { getFirestore, collection, addDoc } from 'firebase/firestore'
 import { marked } from 'marked'
 import Nav from '../components/Nav.vue'
 
+const auth = getAuth()
+const db = getFirestore()
+
 export default {
   components: {
     Nav
@@ -59,7 +62,6 @@ export default {
   },
   methods: {
     checkAuth () {
-      const auth = getAuth()
       onAuthStateChanged(auth, (user) => {
         if (user == null) {
           this.$router.push('/login').catch(() => {})
@@ -67,7 +69,6 @@ export default {
       })
     },
     async createPost () {
-      const db = getFirestore()
       const html = marked.parse(this.text)
       if (html === '') {
         this.$toast.error('내용을 입력해주세요!', {
@@ -81,8 +82,9 @@ export default {
             content: html,
             likes: [],
             createdAt: Date.now(),
-            userUid: getAuth().currentUser.uid,
-            userEmail: getAuth().currentUser.email
+            userUid: auth.currentUser.uid,
+            userEmail: auth.currentUser.email,
+            userDisplayName: auth.currentUser.displayName
           })
           console.log('Document written with ID: ', docRef.id)
           this.$router.push('/').catch(() => {})

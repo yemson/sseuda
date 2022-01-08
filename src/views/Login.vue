@@ -76,6 +76,8 @@
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence } from 'firebase/auth'
 import Nav from '../components/Nav'
 
+const auth = getAuth()
+
 export default {
   name: 'Login',
   components: {
@@ -92,7 +94,6 @@ export default {
   },
   methods: {
     login () {
-      const auth = getAuth()
       setPersistence(auth, browserSessionPersistence)
         .then(() => {
           signInWithEmailAndPassword(auth, this.email, this.password)
@@ -118,7 +119,6 @@ export default {
         })
     },
     checkAuth () {
-      const auth = getAuth()
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.$router.push('/').catch(() => {})
