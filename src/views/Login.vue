@@ -1,26 +1,17 @@
 <template>
-  <div class="random-bg">
-    <nav class="navbar navbar-light bg-light">
-      <div class="container">
-        <router-link
-          class="navbar-brand"
-          to="/"
-        >
-          sseuda
-        </router-link>
-      </div>
-    </nav>
+  <div>
+    <Nav :hide="true" />
     <!-- TODO: 반응형 필요 -->
     <div
       class="card shadow-sm"
-      style="width: 30em; height: 28em; margin: 0 auto; margin-top: 4em;"
+      style="width: 30em; height: 28em; margin: 4em auto 0;"
     >
       <div
         class="card-body"
         style="text-align: left;"
       >
         <div
-          class="card-title; mx-3 mt-2"
+          class="card-title; mx-3 mt-2 fw-bold"
           style="font-size: 2.5em;"
         >
           로그인
@@ -31,7 +22,7 @@
         >
           <label
             for="emailInput"
-            class="form-label"
+            class="form-label fw-bold"
           >이메일</label>
           <input
             id="emailInput"
@@ -47,7 +38,7 @@
         >
           <label
             for="passwordInput"
-            class="form-label"
+            class="form-label fw-bold"
           >비밀번호</label>
           <input
             id="passwordInput"
@@ -62,14 +53,14 @@
           style="margin-top: 2.5rem;"
         >
           <button
-            class="btn btn-primary mb-2 shadow-sm"
+            class="btn btn-primary mb-2 shadow-sm fw-bold"
             type="button"
             @click="login"
           >
             로그인
           </button>
           <router-link
-            class="btn btn-outline-primary shadow-sm"
+            class="btn btn-outline-primary shadow-sm fw-bold"
             type="button"
             to="/register"
           >
@@ -83,9 +74,13 @@
 
 <script>
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence } from 'firebase/auth'
+import Nav from '../components/Nav'
 
 export default {
   name: 'Login',
+  components: {
+    Nav
+  },
   data () {
     return {
       email: '',

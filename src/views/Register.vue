@@ -1,25 +1,16 @@
 <template>
-  <div class="random-bg">
-    <nav class="navbar navbar-light bg-light">
-      <div class="container">
-        <router-link
-          class="navbar-brand"
-          to="/"
-        >
-          sseuda
-        </router-link>
-      </div>
-    </nav>
+  <div>
+    <Nav :hide="true" />
     <div
       class="card"
-      style="width: 30rem; height: 28rem; margin: 0 auto; margin-top: 4em;"
+      style="width: 30rem; height: 28rem; margin: 4em auto 0;"
     >
       <div
         class="card-body"
         style="text-align: left;"
       >
         <div
-          class="card-title; mx-3 mt-2"
+          class="card-title; mx-3 mt-2 fw-bold"
           style="font-size: 2.5em;"
         >
           회원가입
@@ -30,13 +21,12 @@
         >
           <label
             for="emailInput"
-            class="form-label"
+            class="form-label fw-bold"
           >이메일</label>
           <input
             id="emailInput"
-            v-model="email"
             type="email"
-            class="form-control shadow-sm"
+            class="form-control shadow-sm fw-bold"
             placeholder="이메일 입력"
           >
         </div>
@@ -46,11 +36,10 @@
         >
           <label
             for="passwordInput"
-            class="form-label"
+            class="form-label fw-bold"
           >비밀번호</label>
           <input
             id="passwordInput"
-            v-model="password"
             type="password"
             class="form-control shadow-sm"
             placeholder="비밀번호 입력"
@@ -61,13 +50,13 @@
           style="margin-top: 2.5rem;"
         >
           <button
-            class="btn btn-primary mb-2 shadow-sm"
+            class="btn btn-primary mb-2 shadow-sm fw-bold"
             type="button"
           >
             회원가입
           </button>
           <router-link
-            class="btn btn-outline-primary shadow-sm"
+            class="btn btn-outline-primary shadow-sm fw-bold"
             type="button"
             to="/login"
           >
@@ -78,6 +67,17 @@
     </div>
   </div>
 </template>
+
+<script>
+import Nav from '../components/Nav'
+
+export default {
+  name: 'Register',
+  components: {
+    Nav
+  }
+}
+</script>
 
 <style scoped>
 

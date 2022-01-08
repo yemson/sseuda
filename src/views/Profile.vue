@@ -3,7 +3,7 @@
     <Nav :profile="false" />
     {{ user.displayName }} |
     {{ user.email }} |
-    {{ user.photoURL }} |
+    <img :src="user.photoURL"> |
     {{ user.uid }}
   </div>
 </template>

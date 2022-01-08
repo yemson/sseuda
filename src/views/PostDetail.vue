@@ -228,11 +228,7 @@ export default {
         if (user == null) {
           this.clicked = false
         } else {
-          if (likes.includes(user.uid)) {
-            this.clicked = true
-          } else {
-            this.clicked = false
-          }
+          this.clicked = !!likes.includes(user.uid)
         }
       })
     }
