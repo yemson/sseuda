@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { doc, getDoc, collection, addDoc, getFirestore, query, onSnapshot, orderBy, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, collection, addDoc, getFirestore, query, onSnapshot, orderBy, updateDoc } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Turndown from 'turndown'
 import Nav from '../components/Nav.vue'
@@ -188,6 +188,24 @@ export default {
           this.inputComment = ''
         } catch (e) {
           console.error('Error adding document: ', e)
+        }
+        const comments = await getDoc(doc(db, `users/${auth.currentUser.uid}`))
+        if (comments.data() === undefined) {
+          await setDoc(doc(db, `users/${auth.currentUser.uid}`), {
+            postId: []
+          })
+          const comments = await getDoc(doc(db, `users/${auth.currentUser.uid}`))
+          const postId = comments.data().postId
+          postId.push(this.$route.params.id)
+          await updateDoc(doc(db, `users/${auth.currentUser.uid}`), {
+            postId
+          })
+        } else {
+          const postId = comments.data().postId
+          postId.push(this.$route.params.id)
+          await updateDoc(doc(db, `users/${auth.currentUser.uid}`), {
+            postId
+          })
         }
       }
     },

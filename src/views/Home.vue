@@ -4,19 +4,19 @@
     <div class="container">
       <div class="row align-items-md-stretch mt-2">
         <div class="col-md-6 mt-2">
-          <div class="h-100 p-5 bg-light border shadow-sm rounded-3">
-            <h4 class="fw-bold mt-2">
+          <div class="h-100 p-5 pb-3 bg-light border shadow-sm rounded-3">
+            <h6 class="fw-bold">
               {{ $moment().format('YYYY-MM-DD') }}
-            </h4>
-            <h1 class="fw-bold mt-2">
+            </h6>
+            <h5 class="fw-bold">
               오늘의 제시어
-            </h1>
-            <p class="fs-1">
-              -
-            </p>
+            </h5>
+            <h4 class="mt-3">
+              강아지, 강아지, 강아지
+            </h4>
             <div v-if="user !== ''">
               <router-link
-                class="btn btn-outline-secondary mt-2 fw-bold"
+                class="btn btn-outline-secondary mt-3 fw-bold"
                 type="button"
                 to="/post"
               >
@@ -39,7 +39,7 @@
         </div>
         <div class="col-md-6 mt-2">
           <div
-            class="h-100 p-5 bg-light border shadow-sm rounded-3"
+            class="h-80 p-5 bg-light border shadow-sm rounded-3"
           >
             <div
               v-if="user !== ''"
@@ -47,9 +47,43 @@
               <img
                 :src="user.photoURL"
                 alt="jumbo"
-                class="img-fluid img-thumbnail rounded-circle"
+                class="img-fluid img-thumbnail rounded-circle d-inline-block"
                 style="width: 150px; height: 150px; object-fit: cover;"
               >
+              <div
+                class="d-inline position-absolute fw-bold"
+                style="margin-left: 2em;"
+              >
+                <div class="fs-3">
+                  {{ user.displayName }}
+                  <div
+                    class="d-inline-block fw-bold text-muted fs-6"
+                  >
+                    견습생
+                  </div>
+                </div>
+                <hr
+                  class=""
+                  style="margin-top: 0.3em; margin-bottom: 0;"
+                >
+                <div class="mt-2">
+                  내가 쓴 글:
+                  <div class="d-inline">
+                    {{ myPosts.length }}개
+                  </div>
+                </div>
+                <div class="mt-2">
+                  댓글 단 게시글:
+                  <div class="d-inline">
+                    {{ myComments.length }}개
+                  </div>
+                </div>
+                <small
+                  class="text-muted d-inline-block mt-2"
+                >
+                  설명입니다 설명입니다 설명입니다
+                </small>
+              </div>
             </div>
             <div v-else>
               <h2
@@ -65,7 +99,6 @@
                 로그인하러 가기
               </router-link>
             </div>
-            <h3>{{ user.displayName }}</h3>
           </div>
         </div>
       </div>
@@ -172,7 +205,7 @@
                         </li>
                       </ul>
                       <div class="card-footer text-muted fw-bold">
-                        {{ post.displayName }}
+                        {{ post.userDisplayName }}
                       </div>
                     </div>
                   </router-link>
@@ -218,11 +251,10 @@
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
                         <small class="text-muted fw-bold">{{ post.createdAt | moment("YYYY년 MMMM Do, dddd") }}</small>
-                        {{ $moment(post.createdAt).format("YYYY-MMMM-DD") }}
                       </li>
                     </ul>
                     <div class="card-footer text-muted fw-bold">
-                      {{ post.displayName }}
+                      {{ post.userDisplayName }}
                     </div>
                   </div>
                 </router-link>
@@ -245,7 +277,7 @@
 
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getFirestore, collection, query, orderBy, onSnapshot } from 'firebase/firestore'
+import { getFirestore, collection, getDoc, query, where, orderBy, onSnapshot, doc } from 'firebase/firestore'
 import Nav from '../components/Nav.vue'
 
 const auth = getAuth()
@@ -259,7 +291,9 @@ export default {
   data () {
     return {
       user: '',
-      posts: []
+      posts: [],
+      myPosts: [],
+      myComments: []
     }
   },
   mounted () {
@@ -268,9 +302,23 @@ export default {
   },
   methods: {
     checkAuth () {
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
           this.user = user
+          const comment = await getDoc(doc(db, `users/${this.user.uid}`))
+          if (comment.data() !== undefined) {
+            this.myPosts = comment.data().postId
+          }
+          const postQ = query(collection(db, 'posts'), where('userUid', '==', `${this.user.uid}`))
+          onSnapshot(postQ, (snapshot) => {
+            this.myPosts = []
+            snapshot.forEach((doc) => {
+              this.myPosts.push({
+                id: doc.id,
+                ...doc.data()
+              })
+            })
+          })
         }
       })
     },
