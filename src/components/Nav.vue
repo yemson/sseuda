@@ -1,68 +1,84 @@
 <template>
-  <nav class="navbar navbar-light bg-light">
+  <nav
+    class="navbar navbar-light"
+    style="background-color: #ffffff"
+  >
     <div class="container">
       <router-link
         class="navbar-brand fw-bold fs-4"
         to="/"
       >
         <img
-          :src="require('../assets/image/logo.png')"
+          :src="require('../assets/image/logo.svg')"
           alt="logo"
-          style="width: 80px;"
+          width="30px"
         >
+        sseuda
       </router-link>
-      <div
-        v-if="user == ''"
-      >
+      <div v-if="!hide">
         <div
-          class="d-flex"
+          v-if="user === ''"
         >
-          <router-link
-            class="btn btn-primary shadow-sm fw-bold"
-            to="/login"
+          <div
+            class="d-flex"
           >
-            로그인
-          </router-link>
-        </div>
-      </div>
-      <div v-else>
-        <div
-          class="d-flex"
-        >
-          <div class="mt-2 mx-2">
-            반갑습니다, {{ user.email }}님!
+            <router-link
+              class="btn btn-primary shadow-sm fw-bold"
+              to="/login"
+            >
+              로그인
+            </router-link>
           </div>
-          <div class="dropdown">
-            <button
-              id="dropdownMenuButton1"
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              더보기
-            </button>
-            <ul
-              class="dropdown-menu dropdown-menu-end"
-              aria-labelledby="dropdownMenuButton1"
-            >
-              <div v-if="myPage">
+        </div>
+        <div v-else>
+          <div
+            class="d-flex"
+          >
+            <div class="mt-2 mx-2 fw-bold">
+              반갑습니다, {{ user.displayName }}님!
+            </div>
+            <div class="dropdown">
+              <button
+                id="dropdownMenuButton1"
+                class="btn btn-outline-secondary dropdown-toggle fw-bold"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                더보기
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="dropdownMenuButton1"
+              >
+                <div v-if="profile">
+                  <li>
+                    <router-link
+                      class="dropdown-item fw-bold"
+                      :to="`/profile/${user.uid}`"
+                    >
+                      프로필
+                    </router-link>
+                  </li>
+                </div>
+                <div v-if="setting">
+                  <li>
+                    <router-link
+                      class="dropdown-item fw-bold"
+                      :to="`/setting/${user.uid}`"
+                    >
+                      설정
+                    </router-link>
+                  </li>
+                </div>
                 <li>
-                  <router-link
-                    class="dropdown-item"
-                    :to="`/mypage/${user.uid}`"
-                  >
-                    마이페이지
-                  </router-link>
+                  <a
+                    class="dropdown-item fw-bold"
+                    @click="logout"
+                  >로그아웃</a>
                 </li>
-              </div>
-              <li>
-                <a
-                  class="dropdown-item"
-                  @click="logout"
-                >로그아웃</a>
-              </li>
-            </ul>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -73,12 +89,22 @@
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
+const auth = getAuth()
+
 export default ({
   name: 'Nav',
   props: {
-    myPage: {
+    profile: {
       type: Boolean,
       default: true
+    },
+    setting: {
+      type: Boolean,
+      default: true
+    },
+    hide: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -91,7 +117,6 @@ export default ({
   },
   methods: {
     checkAuth () {
-      const auth = getAuth()
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user
@@ -99,7 +124,6 @@ export default ({
       })
     },
     logout () {
-      const auth = getAuth()
       auth.signOut()
       this.$router.go()
     }

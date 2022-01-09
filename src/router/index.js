@@ -30,9 +30,14 @@ const routes = [
     component: () => import('../views/Post.vue')
   },
   {
-    path: '/mypage/:id',
-    name: 'MyPage',
-    component: () => import('../views/MyPage.vue')
+    path: '/profile/:id',
+    name: 'Profile',
+    component: () => import('../views/Profile.vue')
+  },
+  {
+    path: '/setting/:id',
+    name: 'Setting',
+    component: () => import('../views/Setting.vue')
   }
 ]
 
