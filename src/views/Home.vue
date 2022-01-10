@@ -11,7 +11,7 @@
             <h5 class="fw-bold">
               오늘의 제시어
             </h5>
-            <h4 class="mt-3">
+            <h4 class="mt-3 fw-bold">
               강아지, 강아지, 강아지
             </h4>
             <div v-if="user !== ''">
@@ -88,7 +88,7 @@
             <div v-else>
               <h2
                 class="text-center fw-bold d-flex align-items-center justify-content-center"
-                style="margin-top: 2em; margin-bottom: 1em;"
+                style="margin-top: 1.5em; margin-bottom: 1em;"
               >
                 먼저 로그인을 해주세요!
               </h2>
@@ -277,7 +277,7 @@
 
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getFirestore, collection, getDoc, query, where, orderBy, onSnapshot, doc } from 'firebase/firestore'
+import { getFirestore, collection, getDoc, doc, query, where, orderBy, onSnapshot } from 'firebase/firestore'
 import Nav from '../components/Nav.vue'
 
 const auth = getAuth()
@@ -306,12 +306,12 @@ export default {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
           this.user = user
-          const comment = await getDoc(doc(db, `users/${this.user.uid}`))
-          if (comment.data().postId !== undefined) {
-            this.myComments = comment.data().postId
+          const usersInfo = await getDoc(doc(db, `users/${this.user.uid}`))
+          if (usersInfo.data().postId !== undefined) {
+            this.myComments = usersInfo.data().postId
           }
-          if (comment.data().description !== undefined) {
-            this.myDescriptions = comment.data().description
+          if (usersInfo.data().description !== undefined) {
+            this.myDescriptions = usersInfo.data().description
           }
           const postQ = query(collection(db, 'posts'), where('userUid', '==', `${this.user.uid}`))
           onSnapshot(postQ, (snapshot) => {

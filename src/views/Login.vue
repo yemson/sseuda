@@ -28,7 +28,7 @@
             id="emailInput"
             v-model="email"
             type="email"
-            class="form-control shadow-sm"
+            class="form-control shadow-sm fw-bold"
             placeholder="이메일 입력"
           >
         </div>
@@ -44,7 +44,7 @@
             id="passwordInput"
             v-model="password"
             type="password"
-            class="form-control shadow-sm"
+            class="form-control shadow-sm fw-bold"
             placeholder="비밀번호 입력"
           >
         </div>
