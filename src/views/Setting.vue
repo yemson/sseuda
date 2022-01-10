@@ -15,6 +15,20 @@
         aria-describedby="basic-addon1"
       >
     </div>
+    <div class="input-group mb-3">
+      <span
+        id="basic-addon2"
+        class="input-group-text"
+      >@</span>
+      <input
+        v-model="descriptionInput"
+        type="text"
+        class="form-control"
+        placeholder="description"
+        aria-label="description"
+        aria-describedby="basic-addon2"
+      >
+    </div>
     <div class="mb-3">
       <label
         for="formFile"
@@ -38,10 +52,12 @@
 
 <script>
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { getFirestore, doc, updateDoc } from 'firebase/firestore'
 import { getAuth, updateProfile } from 'firebase/auth'
 import Nav from '../components/Nav.vue'
 
 const auth = getAuth()
+const db = getFirestore()
 const storage = getStorage()
 
 export default {
@@ -51,6 +67,7 @@ export default {
   data () {
     return {
       displayNameInput: '',
+      descriptionInput: '',
       file: null
     }
   },
@@ -79,7 +96,11 @@ export default {
       }).catch((error) => {
         console.error('Profile update failed', error)
       })
+      updateDoc(doc(db, `users/${auth.currentUser.uid}`), {
+        description: this.descriptionInput
+      })
     }
+
   }
 }
 </script>

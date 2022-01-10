@@ -81,7 +81,7 @@
                 <small
                   class="text-muted d-inline-block mt-2"
                 >
-                  설명입니다 설명입니다 설명입니다
+                  {{ myDescriptions }}
                 </small>
               </div>
             </div>
@@ -293,7 +293,8 @@ export default {
       user: '',
       posts: [],
       myPosts: [],
-      myComments: []
+      myComments: [],
+      myDescriptions: ''
     }
   },
   mounted () {
@@ -306,8 +307,11 @@ export default {
         if (user) {
           this.user = user
           const comment = await getDoc(doc(db, `users/${this.user.uid}`))
-          if (comment.data() !== undefined) {
-            this.myPosts = comment.data().postId
+          if (comment.data().postId !== undefined) {
+            this.myComments = comment.data().postId
+          }
+          if (comment.data().description !== undefined) {
+            this.myDescriptions = comment.data().description
           }
           const postQ = query(collection(db, 'posts'), where('userUid', '==', `${this.user.uid}`))
           onSnapshot(postQ, (snapshot) => {
