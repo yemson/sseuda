@@ -12,7 +12,7 @@
               오늘의 제시어
             </h5>
             <h4 class="mt-3 fw-bold">
-              강아지, 강아지, 강아지
+              {{ words[0] }}, {{ words[1] }}, {{ words[2] }}
             </h4>
             <div v-if="user !== ''">
               <router-link
@@ -294,12 +294,14 @@ export default {
       posts: [],
       myPosts: [],
       myComments: [],
-      myDescriptions: ''
+      myDescriptions: '',
+      words: []
     }
   },
   mounted () {
     this.checkAuth()
     this.getPosts()
+    this.getWords()
   },
   methods: {
     checkAuth () {
@@ -340,6 +342,10 @@ export default {
     },
     validatePostContent (content) {
       return content.replace(/(<([^>]+)>)/ig, '')
+    },
+    async getWords () {
+      const words = await getDoc(doc(db, `words/${this.$moment().format('YYYY-MM-DD')}`))
+      this.words = words.data().words
     }
   }
 }

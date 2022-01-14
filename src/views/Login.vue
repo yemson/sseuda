@@ -46,6 +46,7 @@
             type="password"
             class="form-control shadow-sm fw-bold"
             placeholder="비밀번호 입력"
+            @keyup.enter="login"
           >
         </div>
         <div
